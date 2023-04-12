@@ -1,0 +1,54 @@
+\documentclass[uplatex,dvipdfmx,a4paper]{jsarticle}
+
+\usepackage{minted}
+
+\title{計算数学 第1回 演習問題}
+\author{1420090 古谷岳人}
+
+\begin{document}
+  \maketitle
+  \subsection*{Nim によるプログラム}
+  \begin{minted}[linenos]{nim}
+import strformat
+
+proc midPointInt(a, b: float64, n: int, f: proc(x: float64): float64): float64 =
+  result = 0.0
+  for k in 0 ..< int(n):
+    result += f(a + (k.toFloat + 0.5) * (b - a) / n.toFloat)
+  result *= (b - a) / n.toFloat
+
+func f(x: float64): float64 =
+  return 1 / x
+
+const
+  a = 1.0
+  b = 2.0
+var
+  N = 1
+  T = (a + b) * (f(a) + f(b)) / 2.0
+  M = midPointInt(a, b, N, f)
+  S = (T + 2.0 * M) / 3.0
+echo fmt"N = {N:4}    M = {M:16.14f}   T = {T:16.14f}    S = {S:16.14f}"
+for m in 1..10:
+  T = (T + M) / 2.0
+  N *= 2
+  M = midPointInt(a, b, N, f)
+  S = (T + 2.0 * M) / 3.0
+  echo fmt"N = {N:4}    M = {M:16.14f}   T = {T:16.14f}    S = {S:16.14f}"
+  \end{minted}
+
+  \subsection*{出力結果}
+  \begin{minted}{text}
+N =    1    M = 0.66666666666667   T = 2.25000000000000    S = 1.19444444444444
+N =    2    M = 0.68571428571429   T = 1.45833333333333    S = 0.94325396825397
+N =    4    M = 0.69121989121989   T = 1.07202380952381    S = 0.81815453065453
+N =    8    M = 0.69266055404320   T = 0.88162185037185    S = 0.75564765281942
+N =   16    M = 0.69302521433097   T = 0.78714120220753    S = 0.72439721028982
+N =   32    M = 0.69311666949756   T = 0.74008320826925    S = 0.70877218242146
+N =   64    M = 0.69313955157281   T = 0.71659993888340    S = 0.70095968067634
+N =  128    M = 0.69314527323678   T = 0.70486974522811    S = 0.69705343056722
+N =  256    M = 0.69314670372438   T = 0.69900750923244    S = 0.69510030556040
+N =  512    M = 0.69314706135075   T = 0.69607710647841    S = 0.69412374305997
+N = 1024    M = 0.69314715075763   T = 0.69461208391458    S = 0.69363546180995
+  \end{minted}
+\end{document}
