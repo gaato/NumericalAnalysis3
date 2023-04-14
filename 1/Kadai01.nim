@@ -14,7 +14,7 @@ const
   b = 2.0
 var
   N = 1
-  T = (a + b) * (f(a) + f(b)) / 2.0
+  T = (b - a) * (f(a) + f(b)) / 2.0
   M = midPointInt(a, b, N, f)
   S = (T + 2.0 * M) / 3.0
 echo fmt"N = {N:4}    M = {M:16.14f}   T = {T:16.14f}    S = {S:16.14f}"
